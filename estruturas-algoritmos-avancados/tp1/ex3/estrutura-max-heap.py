@@ -1,3 +1,6 @@
+#Exercício 3: Implementação da estrutura de dados MaxHeap
+#
+
 class MaxHeap:
     def __init__(self):
         self.elementos = []
@@ -60,12 +63,16 @@ class MaxHeap:
 
 # Exemplo de uso
 heap_maxima = MaxHeap()
-heap_maxima.adicionar(11)
-heap_maxima.adicionar(6)
-heap_maxima.adicionar(4)
-heap_maxima.adicionar(21)
-heap_maxima.adicionar(9)
+heap_maxima.adicionar(50)
+heap_maxima.adicionar(30)
+heap_maxima.adicionar(40)
+heap_maxima.adicionar(10)
+heap_maxima.adicionar(20)
+heap_maxima.adicionar(35)
 
+print("Antes:", heap_maxima.elementos)
+
+heap_maxima.adicionar(45)
 print("Atual:", heap_maxima.elementos)
 print("Maior removido:", heap_maxima.remover_maior())
 
