@@ -1,5 +1,6 @@
 #Exercício 3: Implementação da estrutura de dados MaxHeap
-#
+#Enunciado: Considere a seguinte MaxHeap armazenada em um array:
+#[50, 30, 40, 10, 20, 35] #Após a inserção do elemento 45, qual será a nova estrutura do Heap? Justifique sua resposta.
 
 class MaxHeap:
     def __init__(self):
