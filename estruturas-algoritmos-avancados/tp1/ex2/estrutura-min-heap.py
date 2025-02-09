@@ -62,10 +62,10 @@ class MinHeap:
 
 
 min_heap = MinHeap()
-min_heap.inserir(10)
-min_heap.inserir(5)
+min_heap.inserir(11)
+min_heap.inserir(6)
 min_heap.inserir(3)
-min_heap.inserir(8)
 min_heap.inserir(2)
+min_heap.inserir(9)
 print("Heap atual:", min_heap.heap)
 print("Menor elemento removido:", min_heap.remover_min())
