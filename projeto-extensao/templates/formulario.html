@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gerenciador de Projetos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+        <div >
+        <img src="{{ url_for('static', filename='infnet-lg.png') }}" style="width: 150px; height: 150px" alt="Infnet Logo">
+
+        </div>
+    <div class="container" id="container">
+
+        <div class="card" id="card1">
+            <h1>Bem-vindo ao Gerenciador de Projetos</h1>
+            <h2>Cadastre seu projeto abaixo para uma consultoria de TI.  </h2>
+            <div class="chat" id="chat">
+                <div class="chat-message">Olá! Tudo bem?</div>
+            </div>
+            <button onclick="continuar()">Continuar</button>
+        </div>
+        <div class="card" id="card2" style="display: none;">
+            <form action="{{ url_for('processar_formulario') }}" method="post">
+                <div>
+                    <h2> Formulario Projeto Extensão</h2>
+                </div>
+                <p style='color: gray'> Insira a descrição do seu negócio para elaboração da idéia.</p>
+                <div class="form-group">
+                    <label for="titulo_projeto">Título do Projeto:</label>
+                    <input type="text" id="titulo_projeto" name="titulo_projeto" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="categoria">Categoria/Setor:</label>
+                    <input type="text" id="categoria" name="categoria" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="contato">Contato:</label>
+                    <input type="text" id="contato" name="contato" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="nome">Nome:</label>
+                    <input type="text" id="nome" name="nome" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="descricao">Descrição:</label>
+                    <textarea id="descricao" name="descricao" required></textarea>
+                </div>
+
+                <input type="hidden" name="autor" value="{{ autor }}">
+                <p style="color: white"> * Caso tenha CNPJ adicionar na descrição.</p>
+                <a target="_blank" href="https://sites.google.com/infnet.edu.br/manualgrad/extensao?authuser=0"
+                > Explicação sobre o projeto</a>
+
+                <button type="submit">Enviar</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        function continuar() {
+            const card1 = document.getElementById('card1');
+            const card2 = document.getElementById('card2');
+
+            card1.style.transform = 'translateX(-100%)';
+            card2.style.display = 'block';
+            card2.style.transform = 'translateX(100%)';
+
+            setTimeout(() => {
+                card1.style.display = 'none';
+                card2.style.transform = 'translateX(0)';
+            }, 500);
+        }
+
+        function mostrarMensagens() {
+            const mensagens = [
+                "Minha turma está com vaga em projetos de extensão na área de TI",
+                "Gostaria de se tornar um parceiro do clube de programação e tirar seu projeto do papel?",
+                "Clique em Continuar para começar."
+            ];
+            let index = 0;
+            const chat = document.getElementById('chat');
+
+            const mostrarProximaMensagem = () => {
+                if (index < mensagens.length) {
+                    const mensagemDiv = document.createElement('div');
+                    mensagemDiv.classList.add('chat-message');
+                    mensagemDiv.textContent = mensagens[index];
+                    chat.appendChild(mensagemDiv);
+                    index++;
+                    setTimeout(mostrarProximaMensagem, 2000);
+                }
+            };
+
+            mostrarProximaMensagem();
+        }
+
+        window.onload = mostrarMensagens;
+    </script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista de Projetos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles2.css') }}">
+    <script>
+        function verificarPalavraChave() {
+            const palavraChave = document.getElementById('palavra-chave').value;
+            if (palavraChave === 'infnet') {
+                document.getElementById('projetos').style.display = 'block';
+                document.getElementById('alerta').style.display = 'none';
+            } else {
+                document.getElementById('projetos').style.display = 'none';
+                document.getElementById('alerta').style.display = 'block';
+            }
+        }
+
+        function abrirModal(id) {
+            document.getElementById('modal').style.display = 'flex';
+            document.getElementById('modal-confirmar').onclick = function() {
+                window.location.href = '/deletar/' + id;
+            };
+        }
+
+        function fecharModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        function expandirCard(card) {
+            card.classList.toggle('expandido');
+        }
+
+        function redirecionarParaProjeto(id) {
+            window.location.href = '/detalhe/' + id;
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Lista de Projetos</h1>
+        <div class="input-container">
+            <input type="text" id="palavra-chave" placeholder="Palavra-chave" class="input-palavra-chave">
+            <button onclick="verificarPalavraChave()" class="btn-verificar">Verificar</button>
+        </div>
+        <div id="alerta" style="display: none; color: red; margin-top: 20px;">Palavra-passe incorreta</div>
+        <div id="projetos" style="display: none;">
+            <div class="cards-container">
+                {% for projeto in projetos %}
+                <div class="card-item" onclick="redirecionarParaProjeto('{{ projeto[0] }}')">
+                    <span class="delete-icon" onclick="event.stopPropagation(); abrirModal('{{ projeto[0] }}')">&#128465;</span>
+                    <div class="card-title">{{ projeto[1] }}</div>
+                    <div class="card-category">{{ projeto[2] }}</div>
+                    <div class="card-description">{{ projeto[3] }}</div>
+                    <div class="card-description">{{ projeto[4] }} | {{ projeto[5] }} </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <p>Tem certeza que deseja excluir este projeto?</p>
+            <div class="modal-buttons">
+                <button id="modal-confirmar" class="btn">Confirmar</button>
+                <button onclick="fecharModal()" class="btn btn-cancel">Voltar</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

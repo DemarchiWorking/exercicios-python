@@ -1,0 +1,140 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #121212;
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.container {
+    width: 100%;
+    max-width: 800px;
+    padding: 20px;
+    background-color: #1f1f1f;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+    box-sizing: border-box;
+    margin-top: 20px;
+}
+
+.card {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+
+.card.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.card.animate-in {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.card.animate-out {
+    transform: translateX(-100%);
+    opacity: 0;
+}
+
+.chat {
+    border: 1px solid #333;
+    border-radius: 5px;
+    padding: 10px;
+    max-height: 200px;
+    overflow-y: auto;
+    margin-top: 20px;
+}
+
+.chat-message {
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #2a2a2a;
+    border-radius: 10px;
+    opacity: 0;
+    animation: fadeInLeft 1s forwards;
+}
+
+@keyframes fadeInLeft {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+h1 {
+    margin-top: 0;
+}
+
+h2 {
+    font-weight: normal;
+    color: #b3b3b3;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+form label {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+form .form-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+
+form input[type="text"],
+form textarea {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-top: 5px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #f39c12;
+    border: none;
+    border-radius: 5px;
+    color: #ffffff;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+button:hover {
+    background-color: #e67e22;
+}
+
+@media (min-width: 768px) {
+    form .form-group {
+        flex-wrap: nowrap;
+    }
+
+    form input[type="text"],
+    form textarea {
+        width: 70%;
+    }
+}
