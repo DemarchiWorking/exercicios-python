@@ -1,3 +1,6 @@
+#Exercício 10: Aplicação de Trie
+#Enunciado: Explique como a estrutura Trie pode ser usada para desenvolver um sistema de autocomplete. Implemente uma função que, dado um prefixo, retorne todas as palavras armazenadas na Trie que começam com esse prefixo.
+
 class NoTrie:
     def __init__(self):
         self.filhos = {}

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pesquisa de Contatos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2C2F36; /* fundo escuro */
+            color: #D1D1D1; /* texto cinza */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            padding: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .card {
+            background-color: #3E434B; /* cor do fundo do card */
+            padding: 20px;
+            border-radius: 15px;
+            box-sizing: border-box;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+            margin: 10px;
+            flex: 0 48%;
+        }
+
+        input, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid #444;
+            background-color: #2C2F36;
+            color: #D1D1D1;
+        }
+
+        input:focus, button:focus {
+            outline: none;
+            border-color: #5A9BF4;
+        }
+
+        #suggestions {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 10px;
+        }
+
+        #suggestions li {
+            padding: 10px;
+            background-color: #444;
+            border: 1px solid #555;
+            margin-bottom: 5px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        #suggestions li:hover {
+            background-color: #555;
+        }
+
+        button {
+            background-color: #5A9BF4;
+            border: none;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #4E89F1;
+        }
+
+        @media (max-width: 768px) {
+            .card {
+                flex: 0 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Card 1: Adicionar Contato -->
+        <div class="card">
+            <h2>Adicionar Contato</h2>
+            <input type="text" id="nome" placeholder="Nome">
+            <input type="text" id="telefone" placeholder="Telefone">
+            <button onclick="adicionarContato()">Adicionar</button>
+        </div>
+
+        <!-- Card 2: Buscar Contato -->
+        <div class="card">
+            <h2>Buscar Contato</h2>
+            <input type="text" id="input-contato" placeholder="Digite o nome do contato" oninput="buscarContatos()">
+            <ul id="suggestions"></ul>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function buscarContatos() {
+            const prefixo = document.getElementById('input-contato').value;
+            if (prefixo.length >= 2) {
+                $.get('/buscar', { prefixo: prefixo }, function(data) {
+                    mostrarSugestoes(data);
+                });
+            } else {
+                document.getElementById('suggestions').innerHTML = '';
+            }
+        }
+
+        function mostrarSugestoes(sugestoes) {
+            const ul = document.getElementById('suggestions');
+            ul.innerHTML = '';
+            sugestoes.forEach(function(contato) {
+                const li = document.createElement('li');
+                li.textContent = contato[0];  // Apenas o nome
+                li.onclick = function() {
+                    document.getElementById('input-contato').value = contato[0];
+                    alert('Telefone: ' + contato[1]);
+                    document.getElementById('suggestions').innerHTML = '';
+                };
+                ul.appendChild(li);
+            });
+        }
+
+        function adicionarContato() {
+            const nome = document.getElementById('nome').value;
+            const telefone = document.getElementById('telefone').value;
+            if (nome && telefone) {
+                $.post('/adicionar', { nome: nome, telefone: telefone }, function() {
+                    alert('Contato adicionado!');
+                    document.getElementById('nome').value = '';
+                    document.getElementById('telefone').value = '';
+                });
+            } else {
+                alert('Por favor, preencha ambos os campos!');
+            }
+        }
+    </script>
+</body>
+</html>

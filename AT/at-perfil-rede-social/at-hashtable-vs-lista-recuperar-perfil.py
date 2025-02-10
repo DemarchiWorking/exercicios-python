@@ -79,7 +79,7 @@ def index():
     plot_path = os.path.join(static_path, 'comparacao_de_tempo.png')
     plt.savefig(plot_path)
 
-    # Renderizar template com tempos de recuperação
+    # Renderizar templates com tempos de recuperação
     html_template = '''
         <h1>Tempo de Recuperação: Hashtable vs Lista Sequencial</h1>
         <img src="/static/comparacao_de_tempo.png" alt="Gráfico de Comparação de Tempo">

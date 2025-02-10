@@ -26,7 +26,7 @@ def criar_tabela():
     conexao.commit()
     conexao.close()
 
-# Truncar descrição para exibir no template
+# Truncar descrição para exibir no templates
 def truncar_descricao(descricao, limite=30):
     if len(descricao) > limite:
         return descricao[:limite] + "..."
