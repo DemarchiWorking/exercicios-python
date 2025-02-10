@@ -1,6 +1,7 @@
 #Exercício 7: Implementação de Trie
 #Enunciado: Implemente uma Trie em Python para armazenar um conjunto de palavras. A implementação deve conter métodos para inserir e buscar palavras.
 
+
 class NoTrie:
     def __init__(self):
         # Cada nó pode ter múltiplos filhos, que são armazenados como um dicionário
@@ -62,6 +63,14 @@ class Trie:
         # Retorna a lista de palavras encontradas
         return resultado
 
+    def exibir_trie(self, no_atual=None, prefixo=''):
+        """Exibe a estrutura da Trie no console"""
+        if no_atual is None:
+            no_atual = self.raiz
+        for letra, filho in no_atual.filhos.items():
+            print(prefixo + letra)
+            self.exibir_trie(filho, prefixo + ' ')
+
 
 # Função principal para o menu
 def menu():
@@ -71,10 +80,11 @@ def menu():
     while True:
         # Exibe as opções do menu
         print("\nEscolha uma opção:")
-        print("1 - Inserir palavras")
-        print("2 - Buscar palavras")
-        print("3 - Listar todas as palavras")
-        print("4 - Sair")
+        print("1 - Inserir")
+        print("2 - Buscar")
+        print("3 - Listar todas")
+        print("4 - Exibir estrutura")
+        print("5 - Sair")
 
         # Lê a opção escolhida pelo usuário
         opcao = input("Digite o número da opção: ")
@@ -109,7 +119,12 @@ def menu():
                 print("Nenhuma palavra foi inserida ainda.")
 
         elif opcao == '4':
-            # Se a opção for 4, sai do menu
+            # Se a opção for 4, exibe a estrutura da Trie
+            print("Estrutura Hierárquica da Trie:")
+            trie.exibir_trie()
+
+        elif opcao == '5':
+            # Se a opção for 5, sai do menu
             print("Saindo...")
             break
 
