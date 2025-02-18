@@ -83,3 +83,5 @@ print("Percurso em ordem dps deletar 30:", arvore_binaria.percurso_em_ordem(arvo
 
 arvore_binaria.deletar(50)
 print("Percurso em ordem dps deletar 50:", arvore_binaria.percurso_em_ordem(arvore_binaria.raiz))
+
+#1.2-delecao-no-arvore-binaria-busca.py

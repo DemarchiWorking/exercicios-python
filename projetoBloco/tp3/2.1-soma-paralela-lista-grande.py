@@ -1,31 +1,24 @@
-import multiprocessing
+import time
 
-def soma(parametro):
-    """Calcula a soma de uma parte da lista.
-    Parâmetros:(list): Uma lista de números a serem somados.
-    Retorna:int: A soma dos números na lista."""
-    return sum(parametro)
+def soma_sequencial(lista):
+    """Calcula a soma de toda a lista sequencialmente."""
+    return sum(lista)
 
 if __name__ == "__main__":
+    # Medir tempo total de execução
+    inicio = time.time()
+
     # Definindo o tamanho da lista em 10 milhões de itens
-    tamanho_lista = 10000000
-    # Gerando a lista de números de 1 até 10 milhões
+    tamanho_lista = 10_000_000
     lista_numeros = list(range(1, tamanho_lista + 1))
 
-    # Obtendo o número de núcleos disponíveis na CPU
-    num_processos = multiprocessing.cpu_count()
-    # Calculando o tamanho de cada pedaço para dividir a lista
-    tamanho_pedaco = tamanho_lista // num_processos
-    # Dividindo a lista em pedaços para cada processo
-    pedacos = [lista_numeros[i * tamanho_pedaco:(i + 1) * tamanho_pedaco] for i in range(num_processos)]
+    # Calcular a soma sequencialmente
+    total = soma_sequencial(lista_numeros)
 
-    # Adicionando os elementos restantes ao último pedaço
-    pedacos[-1].extend(lista_numeros[num_processos * tamanho_pedaco:])
+    # Medir tempo final
+    fim = time.time()
+    tempo_total = fim - inicio
 
-    # Usando um pool de processos para calcular a soma de cada pedaço
-    with multiprocessing.Pool(processes=num_processos) as pool:
-        resultados = pool.map(soma, pedacos)
-
-    # Somando os resultados para obter total
-    total = sum(resultados)
+    # Exibir resultados
     print(f"Resposta: {total}")
+    print(f"Tempo total de execução: {tempo_total:.6f} segundos")
