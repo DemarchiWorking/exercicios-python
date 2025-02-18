@@ -57,13 +57,13 @@ elementos = [50, 30, 70, 20, 40, 60, 80]
 for el in elementos:
     arvore.inserir(el)
 
-print("Percurso em ordem inicial:", arvore.percurso_em_ordem(arvore.raiz))  # Deve imprimir: [20, 30, 40, 50, 60, 70, 80]
+print("Percurso em ordem inicial:", arvore.percurso_em_ordem(arvore.raiz))  
 
 # Verificar se a árvore é uma BST válida
-print("A árvore é uma BST válida?", arvore.verificar_se_eh_bst())  # Deve imprimir: True
+print("A árvore é uma BST válida?", arvore.verificar_se_eh_bst())  
 
 # Alterar manualmente um nó para invalidar a propriedade BST
 arvore.raiz.esquerda.direita.chave = 10
 
 # Verificar novamente após a alteração
-print("A árvore é uma BST válida após alteração?", arvore.verificar_se_eh_bst())  # Deve imprimir: False
+print("A árvore é uma BST válida após alteração?", arvore.verificar_se_eh_bst()) 
