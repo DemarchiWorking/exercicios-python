@@ -1,0 +1,1 @@
+#echo "<html><body><h1>Notas dos Alunos</h1><table border='1'><tr><th>Nome</th><th>Nota</th></tr><tr><td>Ana</td><td>8.5</td></tr><tr><td>Bruno</td><td>7.0</td></tr></table></body></html>" > index.html
