@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilos.css') }}">
+    <title>Gestão de Notas</title>
+</head>
+<body>
+    <header>
+        <h1>Gestão de Notas</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('home') }}">Listar Alunos</a></li>
+            <li><a href="{{ url_for('cadastrar') }}">Cadastrar Aluno</a></li>
+        </ul>
+    </nav>
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+    <footer>
+        <p>&copy; 2025 Gestão de Notas</p>
+    </footer>
+</body>
+</html>
