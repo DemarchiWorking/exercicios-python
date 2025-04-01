@@ -3,7 +3,6 @@
 
 from flask import Flask, render_template, jsonify, request
 
-# Definição dos nós da Trie
 class NodoTrie:
     def __init__(self):
         self.filhos = {}
@@ -38,28 +37,23 @@ class Trie:
         return palavras
 
 
-# Inicializando o Flask e a Trie
 app = Flask(__name__)
 trie = Trie()
 
-# Inserindo algumas palavras na Trie (você pode personalizar ou fazer isso dinamicamente)
 palavras_iniciais = ["casa", "carro", "caminhão", "cachorro", "cadeira"]
 for palavra in palavras_iniciais:
     trie.inserir(palavra)
 
-# Rota principal que renderiza o HTML
 @app.route('/')
 def index():
     return render_template('index.html')
 
-# Rota para buscar sugestões de autocompletar
 @app.route('/autocomplete', methods=['GET'])
 def autocomplete():
     prefixo = request.args.get('prefixo', '')
     sugestoes = trie.buscar_autocompletamento(prefixo)
     return jsonify(sugestoes)
 
-# Rota para inserir uma nova palavra
 @app.route('/inserir', methods=['POST'])
 def inserir_palavra():
     palavra = request.form.get('palavra', '')

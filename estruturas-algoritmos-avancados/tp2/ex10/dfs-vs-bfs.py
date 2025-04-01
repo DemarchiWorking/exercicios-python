@@ -2,15 +2,7 @@ import time
 import tracemalloc
 from collections import deque
 
-# Grafo de exemplo
-grafo = {
-    1: [2, 3],
-    2: [4],
-    3: [5],
-    4: [6],
-    5: [6],
-    6: []
-}
+
 
 # Função DFS com print da ordem de visitação
 def dfs(grafo, inicio, visitado=None):

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autocomplete e Correção Automática</title>
+</head>
+<body>
+    <h1>Sistema de Busca - Livraria Online</h1>
+
+    <h3>Autocompletar e Correção Automática</h3>
+
+
+<!-- Campo de entrada único -->
+<label for="entrada">Digite uma palavra para buscar ou inserir:</label>
+<input type="text" id="entrada" placeholder="Digite aqui..." oninput="processarEntrada()">
+    <button onclick="inserirPalavra()">Inserir Palavra</button>
+
+<!-- Resultados -->
+<h2>Sugestões de Autocompletar</h2>
+<ul id="lista-autocompletar"></ul>
+
+<h2>Auto-Correção</h2>
+<ul id="lista-correcao"></ul>
+
+
+    <!-- Autocompletar
+        <h2>Inserir Nova Palavra</h2>
+    <label for="nova-palavra">Nova palavra:</label>
+    <input type="text" id="nova-palavra" placeholder="Digite uma nova palavra">
+    <button onclick="inserirPalavra()">Inserir Palavra</button>
+    <h2>Autocompletar</h2>
+    <label for="entrada">Digite o início do título para buscar:</label>
+    <input type="text" id="entrada" placeholder="Digite aqui..." oninput="buscarSugestoes()">
+    <ul id="lista-sugestoes"></ul>
+    <div id="resultado"></div>
+
+    <h2>Correção Automática</h2>
+    <label for="correcao">Digite uma palavra incorreta:</label>
+    <input type="text" id="correcao" placeholder="Digite aqui..." oninput="buscarCorrecao()">
+    <ul id="lista-correcao"></ul>
+
+
+-->
+    <script>
+        function processarEntrada() {
+        const entrada = document.getElementById('entrada').value;
+
+            if (entrada.length > 0) {
+                fetch(`/processar?entrada=${entrada}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        mostrarAutocompletar(data.autocompletos);
+                        mostrarCorrecao(data.correcoes);
+                    });
+                } else {
+                document.getElementById('lista-autocompletar').innerHTML = '';
+                document.getElementById('lista-correcao').innerHTML = '';
+                }
+        }
+        // Função para autocompletar
+        function buscarSugestoes() {
+            const prefixo = document.getElementById('entrada').value;
+            if (prefixo.length > 0) {
+                fetch(`/autocomplete?prefixo=${prefixo}`)
+                    .then(response => response.json())
+                    .then(data => mostrarSugestoes(data));
+            } else {
+                document.getElementById('lista-sugestoes').innerHTML = '';
+            }
+        }
+
+        function mostrarSugestoes(sugestoes) {
+            const listaSugestoes = document.getElementById('lista-sugestoes');
+            listaSugestoes.innerHTML = '';
+            sugestoes.forEach(function(sugestao) {
+                const li = document.createElement('li');
+                li.textContent = sugestao;
+                li.onclick = function() {
+                    document.getElementById('entrada').value = sugestao;
+                    listaSugestoes.innerHTML = '';
+                    mostrarResultado(sugestao);
+                };
+                listaSugestoes.appendChild(li);
+            });
+        }
+
+        function mostrarResultado(palavra) {
+            document.getElementById('resultado').textContent = `Você selecionou: ${palavra}`;
+        }
+
+        // Função para correção automática
+        function buscarCorrecao() {
+            const palavra = document.getElementById('correcao').value;
+            if (palavra.length > 0) {
+                fetch(`/correcao?palavra=${palavra}`)
+                    .then(response => response.json())
+                    .then(data => mostrarCorrecao(data));
+            } else {
+                document.getElementById('lista-correcao').innerHTML = '';
+            }
+        }
+        function mostrarAutocompletar(sugestoes) {
+            const listaAutocompletar = document.getElementById('lista-autocompletar');
+            listaAutocompletar.innerHTML = '';
+            sugestoes.forEach(sugestao => {
+                const li = document.createElement('li');
+                li.textContent = sugestao;
+
+                // Adiciona evento de clique para alterar o campo de entrada
+                li.onclick = function() {
+                    document.getElementById('entrada').value = sugestao;
+                    listaAutocompletar.innerHTML = ''; // Limpa a lista de sugestões após o clique
+                };
+
+                listaAutocompletar.appendChild(li);
+            });
+        }
+
+        function mostrarCorrecao(sugestoes) {
+            const listaCorrecao = document.getElementById('lista-correcao');
+            listaCorrecao.innerHTML = '';
+            sugestoes.forEach(sugestao => {
+                const li = document.createElement('li');
+                li.textContent = sugestao;
+
+                // Adiciona evento de clique para alterar o campo de entrada
+                li.onclick = function() {
+                    document.getElementById('entrada').value = sugestao;
+                    listaCorrecao.innerHTML = ''; // Limpa a lista de sugestões após o clique
+                };
+
+                listaCorrecao.appendChild(li);
+            });
+        }
+
+       // function mostrarCorrecao(sugestoes) {
+       //     const listaCorrecao = document.getElementById('lista-correcao');
+       //     listaCorrecao.innerHTML = '';
+       //     sugestoes.forEach(function(sugestao) {
+       //         const li = document.createElement('li');
+       //         li.textContent = sugestao;
+       //         listaCorrecao.appendChild(li);
+       //     });
+       // }
+
+        // Função para inserir nova palavra
+        function inserirPalavra() {
+            const palavra = document.getElementById('entrada').value;
+            if (palavra) {
+                fetch('/inserir', {
+                    method: 'POST',
+                    body: new URLSearchParams({ 'palavra': palavra }),
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.status);
+                    if (data.status === "Palavra inserida com sucesso!") {
+                        document.getElementById('nova-palavra').value = '';
+                    }
+                });
+            } else {
+                alert('Por favor, insira uma palavra válida!');
+            }
+        }
+    </script>
+</body>
+</html>
+
+
+    <style>
+                body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+        .container {
+            width: 400px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        input {
+            padding: 10px;
+            width: 80%;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .suggestions {
+            margin-top: 20px;
+        }
+        .suggestion-item {
+            margin: 5px 0;
+            font-weight: bold;
+        }
+
+        #resultado {
+            margin-top: 10px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            padding: 8px;
+            cursor: pointer;
+            background-color: #f0f0f0;
+            margin-top: 4px;
+        }
+
+        li:hover {
+            background-color: #e0e0e0;
+        }
+
+        #resultado {
+            margin-top: 10px;
+        }
+    </style>
