@@ -30,7 +30,7 @@ def solve_permute(string):
 
 
 if __name__ == '__main__':
-    strings = ["A", "AB", "ABC", "ABCD", "ABCDE", "ABCDEF"]
+    strings = ["A", "AB", "ABC", "ABCD", "ABCDE", "ABCDEF", "ABCDEFG", "ABCDEFGH"]
     tempos = []
 
     for s in strings:
@@ -39,7 +39,7 @@ if __name__ == '__main__':
         end_time = time.perf_counter()
         execution_time = end_time - start_time
         tempos.append(execution_time)
-        print(f"Tempo para '{s}': {execution_time:.4f} segundos")
+        print(f"Tempo para '{s}': {execution_time:.9f} segundos")
 
     plt.figure(figsize=(10, 6))
     plt.plot(strings, tempos, marker='o')

@@ -22,7 +22,7 @@ def solve_hanoi(discos):
 
 if __name__ == '__main__':
     tempos = []
-    discos = [1, 5, 10, 15, 20, 25, 30]
+    discos = [1, 5, 10, 15, 20, 25, 26,27, 28, 29, 30]
 
     for n in discos:
         start_time = time.perf_counter()
