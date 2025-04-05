@@ -17,7 +17,7 @@ def contar_modos_otimizado(N, K):
         total_anterior = np.sum(anterior)
         for j in range(K):
             atual[j] = total_anterior - anterior[j]
-        anterior, atual = atual, anterior 
+        anterior, atual = atual, anterior
 
     return np.sum(anterior)
 

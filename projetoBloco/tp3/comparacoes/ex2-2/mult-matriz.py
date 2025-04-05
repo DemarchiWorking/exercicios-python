@@ -1,5 +1,27 @@
 import multiprocessing
 import time
+import random
+
+
+def gerar_matriz(tamanho, valor_max=10):
+    """Gera uma matriz quadrada aleatória."""
+    return [[random.randint(0, valor_max) for _ in range(tamanho)] for _ in range(tamanho)]
+
+
+# Matrizes de exemplo pré-geradas
+MATRIZES_A = {
+    3: [[4, 3, 0], [2, 5, 2], [4, -2, 3]],
+    9: gerar_matriz(9),
+    12: gerar_matriz(12),
+    24: gerar_matriz(24)
+}
+
+MATRIZES_B = {
+    3: [[-5, -5, 0], [-2, 5, 0], [-5, 2, -3]],
+    9: gerar_matriz(9),
+    12: gerar_matriz(12),
+    24: gerar_matriz(24)
+}
 
 
 def multiplicar_fila(parametros):
@@ -51,61 +73,49 @@ def multiplicar_matrizes_sequencial(matriz_a, matriz_b):
     return matriz_resultante
 
 
-def testar_desempenho(matriz_a, matriz_b, n_execucoes=10):
-    """Testa o desempenho das implementações sequencial e paralela."""
-    print("Testando desempenho...\n")
+def testar_desempenho(tamanho, n_execucoes=5):
+    """Testa o desempenho para um tamanho específico de matriz."""
+    matriz_a = MATRIZES_A[tamanho]
+    matriz_b = MATRIZES_B[tamanho]
+
+    print(f"\n{'=' * 50}")
+    print(f"Testando matrizes {tamanho}x{tamanho}")
+    print(f"{'=' * 50}")
+
+    # Aquecimento (warm-up)
+    multiplicar_matrizes_sequencial(MATRIZES_A[3], MATRIZES_B[3])
+    multiplicar_matrizes_paralelo(MATRIZES_A[3], MATRIZES_B[3])
 
     # Teste sequencial
-    tempos_seq = []
-    for _ in range(n_execucoes):
-        inicio = time.perf_counter()
-        resultado_seq = multiplicar_matrizes_sequencial(matriz_a, matriz_b)
-        fim = time.perf_counter()
-        tempos_seq.append(fim - inicio)
+    inicio_seq = time.perf_counter()
+    resultado_seq = multiplicar_matrizes_sequencial(matriz_a, matriz_b)
+    tempo_seq = time.perf_counter() - inicio_seq
 
     # Teste paralelo
-    tempos_par = []
-    for _ in range(n_execucoes):
-        inicio = time.perf_counter()
-        resultado_par = multiplicar_matrizes_paralelo(matriz_a, matriz_b)
-        fim = time.perf_counter()
-        tempos_par.append(fim - inicio)
+    inicio_par = time.perf_counter()
+    resultado_par = multiplicar_matrizes_paralelo(matriz_a, matriz_b)
+    tempo_par = time.perf_counter() - inicio_par
 
-    # Verificar se os resultados são iguais
+    # Verificar resultados
     assert resultado_seq == resultado_par, "Resultados diferentes entre as implementações!"
 
-    # Calcular estatísticas
-    media_seq = sum(tempos_seq) / n_execucoes
-    media_par = sum(tempos_par) / n_execucoes
+    # Exibir resultados
+    print(f"\nTempo sequencial: {tempo_seq:.6f} segundos")
+    print(f"Tempo paralelo:   {tempo_par:.6f} segundos")
 
-    print(f"Tempo médio sequencial: {media_seq:.6f} segundos")
-    print(f"Tempo médio paralelo:   {media_par:.6f} segundos")
-    print(
-        f"Diferença: {((media_seq - media_par) / media_seq) * 100:.2f}% mais {'rápido' if media_par < media_seq else 'lento'}")
-    print(f"\nMelhor tempo sequencial: {min(tempos_seq):.6f} segundos")
-    print(f"Melhor tempo paralelo:   {min(tempos_par):.6f} segundos")
+    if tempo_seq > 0:
+        diferenca = ((tempo_seq - tempo_par) / tempo_seq) * 100
+        print(f"Diferença: {diferenca:.2f}% mais {'rápido' if tempo_par < tempo_seq else 'lento'}")
+    else:
+        print("Diferença: Tempo sequencial muito rápido para calcular porcentagem")
 
 
 if __name__ == "__main__":
-    # Matrizes de exemplo
-    matriz_a = [
-        [4, 3, 0],
-        [2, 5, 2],
-        [4, -2, 3]
-    ]
+    print("Comparação de desempenho: Multiplicação de Matrizes")
+    print("Sequencial vs Paralelo\n")
 
-    matriz_b = [
-        [-5, -5, 0],
-        [-2, 5, 0],
-        [-5, 2, -3]
-    ]
+    # Testar para todos os tamanhos de matriz
+    for tamanho in [3, 9, 12, 24]:
+        testar_desempenho(tamanho)
 
-    # Executar uma única vez para mostrar o resultado
-    print("Resultado da multiplicação:")
-    resultado = multiplicar_matrizes_sequencial(matriz_a, matriz_b)
-    for linha in resultado:
-        print(linha)
-
-    # Testar desempenho com múltiplas execuções
-    print("\n" + "=" * 50 + "\n")
-    testar_desempenho(matriz_a, matriz_b)
+    print("\nTestes concluídos!")
